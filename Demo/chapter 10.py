@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# 10.Python 标准库概览
+# 10.Python 标准库概览（http://www.pythondoc.com/pythontutorial3/stdlib.html）
 
 # 操作系统接口模块：os
 # 文件目录管理模块：shutil
@@ -15,6 +15,12 @@
 # 性能度量：timeit
 # 时间度量工具：profile 和 pstats
 # 质量控制：doctest（扫描模块并根据程序中内嵌的文档字符串执行测试）
+# 远程调用：xmlrpc.client 和 cmlrpc.server
+# 管理邮件信息库：email
+# 信息交换格式：xml.dom 和 xml.sax
+# 通过数据库格式：cvs
+# 国际化：gettext、locale 和 codecs
+
 import os
 import shutil
 import glob

@@ -11,6 +11,8 @@
 # 2、模板
 # Template：字符串模板
 # struct: 二进制数据记录布局
+# 3、多线程：threading
+# 4、日志：logging
 
 import reprlib
 import pprint
@@ -18,7 +20,8 @@ import textwrap
 import locale
 import time, os.path
 import struct
-
+import threading, zipfile
+import logging
 from string import Template
 
 if __name__ == '__main__':
@@ -64,19 +67,43 @@ if __name__ == '__main__':
         print('{0} --> {1}'.format(filename, newname))
     
     # struct
-    with open('myfile.zip', 'rb') as f:
+    with open('wrond.md.zip', 'rb') as f:
         data = f.read()
     
     start = 0
-    for i in range(3):
-        start += 14
-        fields = struct.unpack('<IIHH', data[start:start+16])
-        crc32, comp_size, uncomp_size, filenamesize, extra_size = fields
+    # for i in range(3):                      # show the first 3 file headers
+    #     start += 14
+    #     fields = struct.unpack('<IIIHH', data[start:start+16])
+    #     crc32, comp_size, uncomp_size, filenamesize, extra_size = fields
 
-        start += 16
-        filename = data[start:start+filenamesize]
-        start += filenamesize
-        extra = data[start:start+extra_size]
-        print(filename, hex(crc32), comp_size, uncomp_size)
+    #     start += 16
+    #     filename = data[start:start+filenamesize]
+    #     start += filenamesize
+    #     extra = data[start:start+extra_size]
+    #     print(filename, hex(crc32), comp_size, uncomp_size)
 
-        start += extra_size + comp_size
+    #     start += extra_size + comp_size     # skip to the next header
+
+    # threading
+    class AsyncZip(threading.Thread):
+        def __init__(self, infile, outfile):
+            threading.Thread.__init__(self)
+            self.infile = infile
+            self.outfile = outfile
+        
+        def run(self):
+            f = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
+            f.write(self.infile)
+            f.close()
+            print('Finished background zip of:', self.infile)
+    
+    background = AsyncZip('new_reques.json.zip', 'wrond.md.zip')
+    background.start()
+    print('The main program continues to run in foreground')
+
+    # loggin
+    print(logging.debug('Debugging information'))
+    logging.info('Informational message')
+    print(logging.warning('Warning:config file %s not found', 'server.conf'))
+    print(logging.error('Critical error -- shutting down'))
+    

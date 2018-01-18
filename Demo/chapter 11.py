@@ -13,6 +13,8 @@
 # struct: 二进制数据记录布局
 # 3、多线程：threading
 # 4、日志：logging
+# 5、弱引用：weakref
+# 6、列表工具：array、collections、bisect（存储链表）
 
 import reprlib
 import pprint
@@ -22,7 +24,12 @@ import time, os.path
 import struct
 import threading, zipfile
 import logging
+import weakref, gc
+import bisect
 from string import Template
+from array import array
+from collections import deque
+from heapq import heapify, heappop, heappush
 
 if __name__ == '__main__':
     
@@ -106,4 +113,42 @@ if __name__ == '__main__':
     logging.info('Informational message')
     print(logging.warning('Warning:config file %s not found', 'server.conf'))
     print(logging.error('Critical error -- shutting down'))
+
+    # weakref
+    # class A:
+    #     def __init__(self, value):
+    #         self.value = value
+    #     def __repr__(self):
+    #         return str(self.value)
+
+    # a = A(10)                # create a reference
+    # d = weakref.WeakKeyDictionary()
+    # d['primary'] = a
+    # print(d['primary']);
+
+    # array：存储数据
+    a = array('H', [4000, 10, 700, 22222])
+    print(sum(a))
+    print(a[1:3])
+
+    # collections
+    d = deque(["task1", "task2", "task3"])
+    d.append("task4")
+    print("Handling", d.popleft())
     
+    # unsearched = deque([starting_node])
+    # def breadth_first_search(unsearched):
+    #     node = unsearched.popleft()
+    #     for m in gen_moves(node):
+    #         if is_goal(m):
+    #             return m
+    #         unsearched.append(m)
+    # bisect
+    scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
+    bisect.insort(scores, (300, 'ruby'))
+    print(scores)
+    # heapq
+    data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
+    heapify(data)
+    heappush(data, -5)
+    print([heappop(data) for i in range(3)])

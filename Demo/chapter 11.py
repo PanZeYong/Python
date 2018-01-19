@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# 11 标注库浏览 - Part II
+# 11 标注库浏览 - Part II（http://www.pythondoc.com/pythontutorial3/stdlib2.html）
 
 # 1、输出格式:
 # reprlib
@@ -15,6 +15,7 @@
 # 4、日志：logging
 # 5、弱引用：weakref
 # 6、列表工具：array、collections、bisect（存储链表）
+# 7、十进制浮点数算法：Decimal
 
 import reprlib
 import pprint
@@ -30,6 +31,7 @@ from string import Template
 from array import array
 from collections import deque
 from heapq import heapify, heappop, heappush
+from decimal import *
 
 if __name__ == '__main__':
     
@@ -152,3 +154,13 @@ if __name__ == '__main__':
     heapify(data)
     heappush(data, -5)
     print([heappop(data) for i in range(3)])
+
+    # decimal
+    print(round(Decimal('0.70') * Decimal('1.05'), 2));
+    print(round(.70 * 1.05, 2));
+    print(Decimal('1.00') % Decimal('.10'))
+    print(1.00 % 0.10)
+    print(sum([Decimal('0.1')]*10) == Decimal('1.0'))
+    print(sum([0.1]*10) == 1.0)
+    getcontext().prec = 36;
+    print(Decimal(1) / Decimal(7))
